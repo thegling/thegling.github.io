@@ -1,0 +1,56 @@
+[
+    { 
+        "name": "Kashinath", 
+        "stageName": "", 
+        "role": "Singer", 
+        "color": "#E6603F",
+        "description": "Kashinath is the principal voice of the band, known for his powerful delivery and impressive range. His performance brings a unique blend of classical influence and modern rock intensity, driving the core emotional experience of The Gling's music.",
+        "photoLabel": "KASHINATH - SINGER",
+        "photoUrl": "uploaded:1000121656.jpg-303e1aa3-c30d-46d4-98ce-311017a7f69e"
+    },
+    { 
+        "name": "Qubila", 
+        "stageName": "", 
+        "role": "Vocalist", 
+        "color": "#B87333",
+        "description": "As a commanding vocalist, Qubila adds dynamic layers to the band's sound. Their stage presence is known for being both fierce and deeply magnetic, ensuring every lyric hits home and complements the primary singing style.",
+        "photoLabel": "QUBILA - VOCALS",
+        "photoUrl": "uploaded:Screenshot 2025-10-04 at 11.56.01 AM.jpg-26554b14-64dc-458d-aa3f-d861468b37b5" 
+    },
+    { 
+        "name": "Srishti", 
+        "stageName": "", 
+        "role": "Vocalist/Keys", 
+        "color": "#4A7A8B",
+        "description": "Srishti provides the essential melodic complexity and atmospheric depth. Through layered harmonies and synthetic textures, she forms the bridge between The Gling's raw power and their signature refined, expansive sound.",
+        "photoLabel": "SRISHTI - VOCALS/KEYS",
+        "photoUrl": "uploaded:1000121654.jpg-4602d14b-2152-4e92-8f1a-353b3b6962a6" 
+    },
+    { 
+        "name": "Akhil", 
+        "stageName": "", 
+        "role": "Guitarist", 
+        "color": "#E6603F",
+        "description": "Akhil is the riff architect, blending heavy, aggressive distortion with intricate, technical lead work. He is responsible for crafting the core, driving soundscapes that define The Gling's genre-bending approach.",
+        "photoLabel": "AKHIL - GUITAR",
+        "photoUrl": "uploaded:1000121649.jpg-6645bf50-c25a-415a-a53e-d6bcc95a37e6" 
+    },
+    { 
+        "name": "Arjun", 
+        "stageName": "Maxxedro", 
+        "role": "Bass", 
+        "color": "#B87333",
+        "description": "Known as Maxxedro, Arjun’s bass is the visceral heartbeat of the band. His heavy, pulsating lines ensure the low end not only supports the rhythm section but also acts as a powerful melodic force that rattles your core.",
+        "photoLabel": "ARJUN (MAXXEDRO) - BASS",
+        "photoUrl": null 
+    },
+    { 
+        "name": "Anjohn", 
+        "stageName": "Amediuz", 
+        "role": "Drums", 
+        "color": "#4A7A8B",
+        "description": "Under the name Amediuz, Anjohn is the powerhouse drummer. His style is characterized by explosive fills and complex, high-energy rhythms that push the limits of speed and precision in every live show.",
+        "photoLabel": "ANJOHN (AMEDIUZ) - DRUMS",
+        "photoUrl": null 
+    }
+]

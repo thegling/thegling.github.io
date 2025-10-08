@@ -1,0 +1,36 @@
+{
+    "shows": [
+        {
+            "venue": "The Metal Bar",
+            "location": "Chennai, TN",
+            "date": "2025-10-25",
+            "description": "Headlining our most technical show yet. Expect extended prog sections and new material.",
+            "link": "http://eventbrite.com/metalbar",
+            "imageUrl": "uploaded:Screenshot 2025-10-04 at 11.56.58 AM.jpg-ac9da9a4-b7a6-4ff7-8bb3-2beb6b63bd2e"
+        },
+        {
+            "venue": "Riff Palace",
+            "location": "Bangalore, KA",
+            "date": "2025-09-15",
+            "description": "A throwback set featuring deep cuts from the 'Echo Chamber' EP. Pure raw energy.",
+            "link": "http://ticketmaster.com/riffpalace",
+            "imageUrl": "uploaded:1000121649.jpg-6645bf50-c25a-415a-a53e-d6bcc95a37e6"
+        },
+        {
+            "venue": "The Cauldron",
+            "location": "Pune, MH",
+            "date": "2025-08-01",
+            "description": "Our first major show of the summer circuit, introducing the new stage production.",
+            "link": null,
+            "imageUrl": null
+        },
+        {
+            "venue": "Whispering Canyon",
+            "location": "Ooty, TN",
+            "date": "2025-07-10",
+            "description": "An intimate acoustic set for a private gathering in the hills. Melodic and emotional.",
+            "link": null,
+            "imageUrl": "https://placehold.co/400x250/B87333/FFFCEF?text=ACOUSTIC+NIGHT"
+        }
+    ]
+}
