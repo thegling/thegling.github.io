@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gling | Official Portfolio</title>
+    <!-- Importing new fonts: Shrikhand (Funky Header) and Inter (Clean Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- CORE PALETTE --- */
+        /* Background (Light Base): #FFFCEF (Ivory White) */
+        /* Primary Detail/Text: #5C899D (Cool Teal) */
+        /* Accent/Pop: #E6603F (Coral/Orange) */
+        
+        /* --- METALLIC HINTS (Increased Visibility) --- */
+        /* Secondary Accent 1: #B87333 (Copper) */
+        /* Secondary Accent 2: #FFD700 (Gold) */
+
+        /* Custom styles for aesthetic */
+        body {
+            font-family: 'Inter', sans-serif; 
+            background-color: #FFFCEF; /* Ivory White BG */
+            color: #5C899D; /* Cool Teal Text Base */
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* General styling for header titles that use Shrikhand */
+        .header-shrikhand {
+            font-family: 'Shrikhand', sans-serif;
+            text-transform: none; 
+        }
+
+        /* --- HERO TITLE STYLE (Coral Text, Teal Shadow) --- */
+        .funky-hero-text {
+            color: #E6603F; /* Coral Accent */
+            text-shadow: 
+                1px 1px 0 #FFFCEF, 
+                2px 2px 0 #5C899D, 
+                4px 4px 0 #5C899D; /* Stronger Teal shadow for depth */
+        }
+        
+        /* --- BACKGROUND PATTERN (Subtle Noise on Ivory) --- */
+        @keyframes geometric-start {
+            0% { opacity: 0; transform: scale(1.05); }
+            100% { opacity: 0.3; transform: scale(1); }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Very light, subtle noise pattern */
+            background-image: linear-gradient(to right, #e0e0e0 1px, transparent 1px), 
+                              linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+            background-size: 15px 15px; 
+            opacity: 0.3;
+            z-index: -1; 
+            animation: geometric-start 2s ease-out forwards;
+            pointer-events: none;
+        }
+        
+        /* Custom hover effect for cards */
+        .show-card {
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+             background-color: #5C899D; /* Teal Card Background */
+             color: #FFFCEF; /* Ivory Text for contrast */
+        }
+        .show-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            /* Gold glow for richness */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 15px #FFD700; 
+        }
+        
+        /* Custom styling for the Copper Date in the Card */
+        .card-date-copper {
+            color: #B87333; /* Copper */
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); /* Subtle white inner glow */
+            font-weight: 700;
+        }
+
+        /* Custom styling for the Gold Link in the Card */
+        .card-link-gold {
+            color: #FFD700; /* Gold */
+            font-weight: 900; /* Extra bold for visibility */
+            text-decoration: underline;
+        }
+
+
+        /* Custom image placeholder styling for gallery */
+        .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 250px;
+            background-color: #4A7A8B; /* Darker Teal */
+            color: #FFD700; /* Gold Text */
+            font-size: 1.25rem;
+            text-align: center;
+        }
+
+        /* Member Profile Placeholder Styling (Used when photoUrl is null) */
+        .member-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            /* min-height: h-96 in rem */
+            min-height: 24rem; 
+            color: #FFFCEF; 
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            letter-spacing: 0.1em; /* tracking-widest */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header Border: Changed to Copper */
+        .section-header-border {
+            border-color: #B87333; /* Copper border */
+        }
+        
+        /* --- REUSABLE LETTER ANIMATION CSS FOR HERO TITLE ONLY --- */
+        .word-container {
+            display: inline-block; 
+            overflow: hidden; 
+        }
+        .letter-animation {
+            display: inline-block; 
+            transform: translateY(100%); 
+            opacity: 0;
+            /* Made animation slightly faster */
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out; 
+        }
+        .letter-animation.funky-hero-text {
+            /* Ensure the text shadow is applied to the animating letters */
+            text-shadow: 
+                1px 1px 0 #FFFCEF, 
+                2px 2px 0 #5C899D, 
+                4px 4px 0 #5C899D; 
+        }
+
+        /* * Animation: Content Fade-In */
+        .fade-in-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-content.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- PRELOADER AND GLITCH ANIMATION --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FFFCEF; /* Ivory White BG */
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.7s ease-out; 
+        }
+        
+        .glitch-text {
+            font-size: 4rem; 
+            font-weight: 900;
+            position: relative; 
+            z-index: 10; 
+            animation: glitch-anim 1.2s steps(2, end) forwards; 
+            color: #FFD700; /* Gold */
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Gold Glow */
+            letter-spacing: 0.5rem;
+            transition: font-family 0.01s linear, color 0.01s linear; 
+        }
+
+        /* Background Text Layer within Preloader */
+        #preloader-background-text {
+            position: absolute;
+            top: -100%; 
+            left: -100%;
+            width: 300%; 
+            height: 300%;
+            overflow: hidden;
+            color: #B87333; /* Copper */
+            opacity: 0.05; 
+            font-size: 2rem;
+            font-family: 'Shrikhand', sans-serif; 
+            white-space: pre-wrap;
+            line-height: 1.5;
+            z-index: 1; 
+            animation: preloader-chaos 1.2s steps(10, end) forwards; 
+        }
+        
+        @keyframes preloader-chaos {
+            0% { transform: translate(0%, 0%) rotate(0deg); opacity: 0.01; }
+            20% { transform: translate(-5%, -5%) rotate(2deg); opacity: 0.04; }
+            40% { transform: translate(5%, -5%) rotate(-2deg); opacity: 0.06; }
+            60% { transform: translate(-5%, 5%) rotate(3deg); opacity: 0.04; }
+            80% { transform: translate(5%, 5%) rotate(-1deg); opacity: 0.05; }
+            100% { transform: translate(0%, 0%) rotate(0deg); opacity: 0.08; }
+        }
+
+        /* Glitch Keyframes - Same as before */
+        @keyframes glitch-anim {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-5px, 5px);
+                opacity: 0.8;
+            }
+            40% {
+                transform: translate(-5px, -5px);
+                opacity: 1;
+            }
+            60% {
+                transform: translate(5px, 5px);
+                opacity: 0.7;
+            }
+            80% {
+                transform: translate(5px, -5px);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(0);
+                opacity: 1;
+            }
+        }
+
+        /* Hide main content initially to ensure preloader is seen */
+        #main-content-wrapper {
+            opacity: 0;
+            transition: opacity 0.7s ease-in; 
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    
+    <!-- PRELOADER (Full Screen with Glitch Effect) -->
+    <div id="preloader">
+        <div id="preloader-background-text"></div> 
+        <!-- Initial preloader text is Gold -->
+        <div id="glitch-text" class="glitch-text header-shrikhand">TG</div>
+    </div>
+
+    <!-- Wrapper for the rest of the content, initially hidden -->
+    <div id="main-content-wrapper">
+
+        <!-- Header & Navigation - Fixed -->
+        <!-- Increased z-index to z-50 to ensure icon is always clickable and not obscured -->
+        <!-- Text Color: Teal, Hover: Gold. Solid BG on scroll: Teal (#5C899D) -->
+        <header id="main-header" class="px-4 sm:px-8 py-6 fixed top-0 w-full z-50 transition-all duration-300 bg-transparent">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                
+                <!-- Logo - Uses the Coral/Teal Hero style -->
+                <div id="logo" class="text-xl sm:text-3xl font-black tracking-widest funky-hero-text header-shrikhand transition-opacity duration-300 opacity-0">TG</div>
+
+                <!-- Navigation Links - Text Color: Teal (#5C899D), Hover: Gold (#FFD700) -->
+                <nav class="space-x-4 sm:space-x-8 flex items-center text-sm sm:text-base font-semibold">
+                    <a href="#home" class="text-[#5C899D] hover:text-[#FFD700] transition duration-300 uppercase">Home</a>
+                    <a href="#about" class="text-[#5C899D] hover:text-[#FFD700] transition duration-300 uppercase">About</a>
+                    <a href="#members" class="text-[#5C899D] hover:text-[#FFD700] transition duration-300 uppercase">Members</a> 
+                    <a href="#gallery" class="text-[#5C899D] hover:text-[#FFD700] transition duration-300 uppercase">Gallery</a>
+                    <a href="#contact" class="text-[#5C899D] hover:text-[#FFD700] transition duration-300 uppercase">Contact</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <!-- Instagram Link is correct. Icon Color: Teal (#5C899D), Hover: Copper (#B87333) -->
+                    <a href="https://www.instagram.com/thatclassicgling_band?igsh=MTI3aXR4Nm5qdm1oMQ==" target="_blank" class="text-[#5C899D] hover:text-[#B87333] transition duration-300" aria-label="Instagram">
+                        <!-- Instagram SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.5" y1="6.5" y2="6.5"/></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area - Fixed width container -->
+        <main class="max-w-6xl mx-auto p-4 sm:p-8">
+
+            <!-- Home Section (Hero) -->
+            <section id="home" class="pt-32 pb-16 text-center"> 
+                <!-- HERO TITLE: Coral Text, Teal Shadow, Shrikhand font -->
+                <h2 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-black mb-6 header-shrikhand funky-hero-text">Unleash The Sound</h2>
+                
+                <!-- HERO PARAGRAPH: Teal (#5C899D) and Inter font -->
+                <p id="hero-paragraph" class="text-lg sm:text-xl text-[#5C899D] max-w-3xl mx-auto fade-in-content opacity-90">
+                    Official portfolio for The Gling. Catch the latest from our shows, music releases, and tour dates right here.
+                </p>
+                
+                <!-- HERO BUTTON: Coral BG (#E6603F), Text: Ivory White (#FFFCEF) -->
+                <div id="hero-button" class="mt-10 fade-in-content">
+                    <a href="#gallery" class="inline-block px-8 sm:px-10 py-3 sm:py-4 bg-[#E6603F] text-[#FFFCEF] font-extrabold text-base sm:text-lg rounded-lg shadow-2xl hover:bg-[#5C899D] hover:text-[#FFFCEF] transition duration-300">
+                        VIEW TOUR DATES
+                    </a>
+                </div>
+            </section>
+
+            <!-- About Section - Two columns (Desktop) -->
+            <section id="about" class="py-16 text-left border-t border-[#D0D0D0] mt-12">
+                <!-- Title: Cool Teal (#5C899D) and Shrikhand font, Copper Border -->
+                <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#5C899D] border-b-2 section-header-border pb-3 header-shrikhand fade-in-content">
+                    The Gling: Our Story
+                </h2>
+                <!-- Content: Teal (#5C899D) and Inter font -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
+                    
+                    <div class="col-span-full lg:col-span-2 space-y-6 text-base sm:text-lg text-[#5C899D] opacity-90">
+                        <p class="fade-in-content" style="transition-delay: 0.1s;">
+                            <strong>The Gling</strong> was forged in the fire of endless nights, cheap coffee, and a shared obsession with blending raw, post-punk energy with complex, soaring melodies. We started in a basement, driven by a simple mandate: write music that demands attention and refuses easy categorization.
+                        </p>
+                        <p class="fade-in-content" style="transition-delay: 0.2s;">
+                            Our sound is characterized by pounding drums, bass lines that rattle your core, and guitar work that shifts from grinding dissonance to anthemic harmony in a single measure. Every song is a narrative—a journey through noise, intensity, and eventual release.
+                        </p>
+                        <p class="fade-in-content" style="transition-delay: 0.3s;">
+                            Since our debut EP, "Echo Chamber," we've been relentless on the road, bringing our high-octane live show to every stage we can find. We believe the true experience of music happens in the moment, sweat-soaked and loud. Come witness the Gling.
+                        </p>
+                    </div>
+                    <!-- Photo Placeholder: Darker Teal (#4A7A8B), Text: Gold (#FFD700) -->
+                    <div class="col-span-full lg:col-span-1 flex justify-center lg:justify-end">
+                        <div class="w-full max-w-sm h-80 bg-[#4A7A8B] text-[#FFD700] rounded-xl flex items-center justify-center text-3xl font-bold tracking-widest shadow-lg fade-in-content header-shrikhand" style="transition-delay: 0.4s;">
+                            [BAND PHOTO HERE]
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Members Section (UPDATED) -->
+            <section id="members" class="py-16 text-left border-t border-[#D0D0D0] mt-12">
+                <!-- Title: Cool Teal (#5C899D) and Shrikhand font, Copper Border -->
+                <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#5C899D] border-b-2 section-header-border pb-3 header-shrikhand fade-in-content">
+                    The Architects of Sound
+                </h2>
+                
+                <!-- Container for dynamically generated member profiles -->
+                <div id="member-profiles-container">
+                    <!-- Profiles will be injected here by JavaScript -->
+                </div>
+
+            </section>
+
+            <!-- Dynamic Gallery Section - Three columns fixed -->
+            <section id="gallery" class="pt-16 pb-12 border-t border-[#D0D0D0] mt-12">
+                <!-- Title: Cool Teal (#5C899D) and Shrikhand font, Copper Border -->
+                <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#5C899D] border-b-2 section-header-border pb-3 header-shrikhand fade-in-content">
+                    Live Shows & Photos
+                </h2>
+                
+                <div id="show-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+                    <!-- Loading Message Color: Coral (#E6603F) -->
+                    <p class="col-span-full text-center text-[#E6603F] opacity-70" id="gallery-loading-message">Loading amazing show moments...</p>
+                </div>
+                
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-16 text-center border-t border-[#D0D0D0] mt-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-[#5C899D] mb-8 header-shrikhand fade-in-content">Book Us</h2>
+                <p class="text-base sm:text-xl text-[#5C899D] opacity-90 mb-10 max-w-xl mx-auto fade-in-content" style="transition-delay: 0.1s;">
+                    Ready to bring the noise to your venue? Drop us an email or find us on social media.
+                </p>
+                <!-- Button: Coral BG (#E6603F), Text: Ivory White (#FFFCEF). Hover to Teal. -->
+                <div class="fade-in-content" style="transition-delay: 0.2s;">
+                    <a href="mailto:booking@theriffweavers.com" class="inline-block px-8 sm:px-10 py-3 sm:py-4 bg-[#E6603F] text-[#FFFCEF] font-extrabold text-base sm:text-lg rounded-lg shadow-2xl hover:bg-[#5C899D] hover:text-[#FFFCEF] transition duration-300">
+                        EMAIL BOOKING
+                    </a>
+                </div>
+            </section>
+            
+        </main>
+
+        <!-- Footer: Text: Teal (#5C899D), Border: Light Gray (#D0D0D0), BG: Ivory White (#FFFCEF) -->
+        <footer class="p-6 mt-12 text-center text-[#5C899D] opacity-70 border-t border-[#D0D0D0] text-sm bg-[#FFFCEF]">
+            &copy; 2024 The Gling. All rights reserved.
+        </footer>
+
+    </div>
+
+
+    <script>
+        // --- Data Fetching Paths ---
+        // These file names must match the files you modify in the Canvas
+        const MEMBER_DATA_URL = 'band_members.json';
+        const SHOW_DATA_URL = 'data.json';
+
+
+        // --- REUSABLE FUNCTION: Split text into letters and animate slide-up (USED FOR HERO ONLY) ---
+        function splitAndAnimateText(elementId) {
+            const element = document.getElementById(elementId);
+            if (!element || element.getAttribute('data-animated')) return;
+
+            const text = element.textContent.trim();
+            const words = text.split(/\s+/);
+
+            element.innerHTML = ''; 
+            let delay = 0;
+
+            words.forEach((word, wordIndex) => {
+                const wordContainer = document.createElement('span');
+                wordContainer.className = 'word-container';
+
+                if (wordIndex > 0) {
+                    element.appendChild(document.createTextNode(' '));
+                }
+
+                Array.from(word).forEach(letter => {
+                    const letterSpan = document.createElement('span');
+                    // Add the funky-hero-text class for the coral color and teal shadow
+                    letterSpan.className = 'letter-animation funky-hero-text'; 
+                    letterSpan.textContent = letter === ' ' ? '\u00A0' : letter; 
+                    
+                    // Reduced delay for faster sequence
+                    letterSpan.style.transitionDelay = `${delay}s`;
+                    delay += 0.025; // Slightly reduced step for faster overall appearance
+
+                    wordContainer.appendChild(letterSpan);
+                });
+
+                element.appendChild(wordContainer);
+            });
+
+            element.setAttribute('data-animated', 'true');
+
+            setTimeout(() => {
+                element.querySelectorAll('.letter-animation').forEach(letterSpan => {
+                    letterSpan.style.transform = 'translateY(0)';
+                    letterSpan.style.opacity = '1';
+                });
+            }, 10); 
+        }
+        // --- END REUSABLE FUNCTION ---
+        
+        // --- Member Profile Generation Function (MODIFIED TO SUPPORT photoUrl) ---
+        function createMemberCard(member, index) {
+            const isReversed = index % 2 !== 0; // Reverse layout (text on left, photo on right) for odd indices
+            const stageNameDisplay = member.stageName ? `(${member.stageName})` : '';
+
+            // Determine if an image or a colored placeholder should be used
+            const photoElement = member.photoUrl 
+                ? `
+                    <img src="${member.photoUrl}" alt="${member.name} - ${member.role}" 
+                         class="w-full min-h-96 h-auto object-cover object-center rounded-xl shadow-lg"
+                         style="aspect-ratio: 1/1;"
+                         onerror="this.onerror=null; this.src='https://placehold.co/400x400/4A7A8B/FFD700?text=Image+Load+Failed';">
+                `
+                : `
+                    <!-- Placeholder uses the member's specific color -->
+                    <div class="member-placeholder rounded-xl header-shrikhand" style="background-color: ${member.color};">
+                        ${member.photoLabel}
+                    </div>
+                `;
+
+            // Photo Container
+            const photoContainer = `
+                <div class="order-2 lg:order-${isReversed ? '2' : '1'} w-full max-w-lg mx-auto">
+                    ${photoElement}
+                </div>
+            `;
+            
+            // Info Content Element
+            const infoContent = `
+                <div class="order-1 lg:order-${isReversed ? '1' : '2'} space-y-4 text-base sm:text-lg text-[#5C899D] opacity-90">
+                    <h3 class="text-3xl sm:text-4xl funky-hero-text header-shrikhand">
+                        ${member.name} ${stageNameDisplay} 
+                        <span class="text-[#E6603F] text-xl">/ ${member.role}</span>
+                    </h3>
+                    <p>${member.description}</p>
+                </div>
+            `;
+
+            const card = document.createElement('div');
+            card.className = `grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-20 fade-in-content`;
+            card.style.transitionDelay = `${(index * 0.2) + 0.1}s`; 
+
+            // Arrange content based on reversal flag
+            if (isReversed) {
+                card.innerHTML = infoContent + photoContainer;
+            } else {
+                card.innerHTML = photoContainer + infoContent;
+            }
+
+            return card;
+        }
+
+        async function loadMembers(contentObserver) {
+            const container = document.getElementById('member-profiles-container');
+            if (!container) return;
+            container.innerHTML = '<p class="col-span-full text-center text-[#E6603F] opacity-70">Loading band members...</p>';
+
+            try {
+                // Fetching from the file open in the Canvas
+                const response = await fetch(MEMBER_DATA_URL);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const memberData = await response.json();
+                
+                container.innerHTML = ''; // Clear loading message
+
+                memberData.forEach((member, index) => {
+                    const card = createMemberCard(member, index);
+                    container.appendChild(card);
+                    contentObserver.observe(card); // Add card to the observer list
+                });
+
+            } catch (error) {
+                console.error('Error loading member data:', error);
+                container.innerHTML = '<p class="col-span-full text-center text-xl font-bold text-[#E6603F] header-shrikhand">FAILED TO LOAD MEMBER DATA.</p>';
+            }
+        }
+        // --- END Member Profile Generation Function ---
+
+
+        // --- Preloader Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const glitchTextElement = document.getElementById('glitch-text');
+            const mainWrapper = document.getElementById('main-content-wrapper');
+            const preloaderBackgroundText = document.getElementById('preloader-background-text');
+            const heroParagraph = document.getElementById('hero-paragraph');
+            const heroButton = document.getElementById('hero-button');
+            
+            // TG Text Pattern Generation for Preloader background
+            const repeatCount = 100; 
+            const textToRepeat = 'TG TG TG TG TG TG TG TG TG TG TG TG '; 
+            let patternContent = '';
+            for (let i = 0; i < repeatCount; i++) {
+                patternContent += textToRepeat + '\n'; 
+            }
+            preloaderBackgroundText.textContent = patternContent;
+
+            // Define the new font and color palettes for the glitch
+            const fontClasses = [
+                'header-shrikhand', 'font-inter', 'header-shrikhand', 'font-inter'
+            ];
+            // Color Palette: Ivory White, Cool Teal, Coral, Copper, Gold
+            const colorPalette = ['#FFFCEF', '#5C899D', '#E6603F', '#B87333', '#FFD700']; 
+
+            let fontIndex = 0;
+            
+            document.body.style.overflow = 'hidden'; 
+
+            // Start the rapid font and color cycling
+            const fontInterval = setInterval(() => {
+                glitchTextElement.classList.remove(...fontClasses);
+                glitchTextElement.classList.add(fontClasses[fontIndex]);
+                fontIndex = (fontIndex + 1) % fontClasses.length;
+
+                const randomColorIndex = Math.floor(Math.random() * colorPalette.length);
+                const randomColor = colorPalette[randomColorIndex];
+                glitchTextElement.style.color = randomColor;
+                glitchTextElement.style.textShadow = `0 0 5px ${randomColor}70, 0 0 15px ${randomColor}40`;
+
+            }, 80); 
+
+            // Wait for the total glitch duration (1.2 seconds)
+            setTimeout(() => {
+                // 1. STOP THE FONT CYCLING
+                clearInterval(fontInterval);
+
+                // 2. Set the final look
+                glitchTextElement.classList.remove(...fontClasses);
+                glitchTextElement.classList.add('header-shrikhand'); 
+                glitchTextElement.style.color = '#FFD700'; 
+                glitchTextElement.style.textShadow = 'none';
+
+                // 3. Fade out the preloader (0.7 seconds)
+                preloader.style.opacity = '0';
+                
+                // 4. Fade in the main content wrapper (0.7 seconds)
+                mainWrapper.style.opacity = '1';
+
+                // --- START HERO ANIMATION EARLIER (Immediately after glitch ends) ---
+                splitAndAnimateText('hero-title'); 
+                
+                // Stagger the rest of the hero content to appear after the title starts
+                setTimeout(() => {
+                    heroParagraph.classList.add('is-visible');
+                }, 300); 
+
+                setTimeout(() => {
+                    heroButton.classList.add('is-visible');
+                }, 600); 
+                // --------------------------------------------------------------------
+
+                // 5. Remove the preloader element after its fade transition is complete (0.7 seconds)
+                setTimeout(() => {
+                    preloader.remove();
+                    document.body.style.overflow = 'auto'; 
+
+                    // 6. Setup all scroll animations now that the content is visible
+                    setupScrollAnimations();
+                }, 700); 
+
+            }, 1200); 
+        });
+        
+        // --- Scroll Animation Setup for Content ---
+        function setupScrollAnimations() {
+            // 1. Intersection Observer for all content elements (smooth fade-in on scroll)
+            const contentObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 }); 
+
+            // Observe all content elements using the .fade-in-content class
+            const contentToAnimate = document.querySelectorAll('.fade-in-content');
+            contentToAnimate.forEach(element => {
+                if (element.id !== 'hero-paragraph' && element.id !== 'hero-button') {
+                    contentObserver.observe(element);
+                }
+            });
+            
+            // Load dynamic data for gallery and members
+            loadMembers(contentObserver);
+            loadPortfolio(contentObserver);
+        }
+
+        // --- Header Scroll Logic (Dynamic Background) ---
+        function handleHeaderScroll() {
+            const header = document.getElementById('main-header');
+            const logo = document.getElementById('logo');
+            // Classes for the SOLID state - Using Cool Teal (#5C899D)
+            const scrollClasses = ['shadow-md', 'border-b', 'border-[#D0D0D0]', 'bg-[#5C899D]'];
+            // Classes for the TRANSPARENT state 
+            const initialClasses = ['bg-transparent', 'shadow-none', 'border-none']; 
+            
+            // Threshold: 50 pixels scrolled
+            if (window.scrollY > 50) { 
+                // Scrolled: Apply solid background (Teal) and change link colors to Ivory
+                header.classList.add(...scrollClasses);
+                header.classList.remove(...initialClasses);
+                logo.classList.add('opacity-100');
+                
+                // Change links to white/ivory on the dark teal background, hover is Gold
+                header.querySelectorAll('nav a, svg').forEach(el => {
+                    el.classList.add('text-[#FFFCEF]'); // Ivory White
+                    el.classList.remove('text-[#5C899D]'); // Cool Teal
+                });
+
+                header.querySelectorAll('nav a').forEach(el => {
+                    el.classList.remove('hover:text-[#FFD700]'); // Remove Gold hover on scroll up
+                    el.classList.add('hover:text-[#FFD700]'); // Add Gold hover on scroll down
+                });
+
+                header.querySelector('svg').classList.add('hover:text-[#B87333]'); // Copper hover
+                header.querySelector('svg').classList.remove('hover:text-[#5C899D]'); 
+                
+            } else {
+                // Top: Transparent background (links are Teal)
+                header.classList.remove(...scrollClasses);
+                header.classList.add(...initialClasses);
+                logo.classList.remove('opacity-100');
+                logo.classList.add('opacity-0');
+                
+                // Change links back to Teal on the light Ivory background, hover is Gold
+                header.querySelectorAll('nav a, svg').forEach(el => {
+                    el.classList.add('text-[#5C899D]'); // Cool Teal
+                    el.classList.remove('text-[#FFFCEF]'); // Ivory White
+                });
+                
+                header.querySelectorAll('nav a').forEach(el => {
+                    el.classList.add('hover:text-[#FFD700]'); // Gold hover
+                });
+
+                header.querySelector('svg').classList.add('hover:text-[#B87333]'); // Copper hover
+            }
+        }
+        
+        // --- Gallery/Portfolio Functions (Fetching from data.json) ---
+        function createShowCard(show, index, contentObserver) {
+            const card = document.createElement('div');
+            // Card BG: Cool Teal (#5C899D), Text: Ivory White (#FFFCEF)
+            card.className = 'show-card rounded-lg overflow-hidden shadow-lg transition duration-500 fade-in-content';
+            card.style.transitionDelay = `${(index + 2) * 0.1}s`; 
+            
+            const date = new Date(show.date);
+            const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            card.innerHTML = `
+                ${show.imageUrl 
+                    ? `<img src="${show.imageUrl}" alt="${show.venue} live show photo" class="w-full h-64 object-cover" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/400x250/4A7A8B/B87333?text=IMAGE+NOT+FOUND'; this.closest('.show-card').querySelector('.placeholder-text').textContent = 'LIVE PHOTO NOT AVAILABLE';" />`
+                    : `<div class="placeholder header-shrikhand"><span class="placeholder-text">PHOTO COMING SOON</span></div>`
+                }
+                
+                <div class="p-6">
+                    <!-- Date Color: Copper (#B87333) with custom class for shadow/boldness -->
+                    <p class="text-sm card-date-copper mb-1">${formattedDate}</p>
+                    <!-- Venue Color: Ivory White (#FFFCEF) and Shrikhand font -->
+                    <h3 class="text-2xl font-bold text-[#FFFCEF] mb-2 header-shrikhand">${show.venue}</h3>
+                    <!-- Location Color: Darker Teal (#4A7A8B) -->
+                    <p class="text-[#4A7A8B] text-sm mb-4">${show.location}</p>
+                    <!-- Description Color: Ivory White (#FFFCEF) and Inter font -->
+                    <p class="text-[#FFFCEF] opacity-90">${show.description}</p>
+                    <!-- Link Color: Gold (#FFD700) with custom class for bold/underline -->
+                    ${show.link ? `<a href="${show.link}" target="_blank" class="mt-4 inline-block card-link-gold hover:text-[#E6603F] uppercase">VIEW EVENT</a>` : ''}
+                </div>
+            `;
+            
+            // Add the card to the observer for fade-in effect
+            contentObserver.observe(card);
+            return card;
+        }
+
+        async function loadPortfolio(contentObserver) {
+            const galleryContainer = document.getElementById('show-gallery');
+            const loadingMessage = document.getElementById('gallery-loading-message');
+            
+            try {
+                // Fetching from the data.json file
+                const response = await fetch(SHOW_DATA_URL); 
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+
+                if(loadingMessage) loadingMessage.remove(); 
+                
+                if (!Array.isArray(data.shows) || data.shows.length === 0) {
+                    // Message color: Teal (#5C899D)
+                    galleryContainer.innerHTML = '<p class="col-span-full text-center text-xl font-bold text-[#5C899D] opacity-70 header-shrikhand">NO SHOWS OR PHOTOS AVAILABLE YET. CHECK BACK SOON!</p>';
+                    return;
+                }
+                
+                // Sort by date descending (most recent first)
+                const sortedShows = data.shows.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                sortedShows.forEach((show, index) => {
+                    const card = createShowCard(show, index, contentObserver); 
+                    galleryContainer.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error('Error loading portfolio data:', error);
+                if(loadingMessage) {
+                    // Error message color: Coral (#E6603F)
+                    loadingMessage.textContent = 'FAILED TO LOAD PORTFOLIO DATA.';
+                    loadingMessage.className = 'col-span-full text-center text-[#E6603F] font-bold header-shrikhand';
+                }
+            }
+        }
+        
+        window.addEventListener('scroll', handleHeaderScroll);
+        document.addEventListener('DOMContentLoaded', handleHeaderScroll);
+    </script>
+
+</body>
+</html>
